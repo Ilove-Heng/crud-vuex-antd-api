@@ -4,6 +4,14 @@
       <a-button type="primary" @click="showModal" class="newUserBtn">
         New User
       </a-button>
+
+      <!-- search input -->
+      <a-input-search
+        placeholder="input search text"
+        style="width: 250px"
+        @search="onSearch"
+      />
+      <!--end search input -->
     </div>
 
     <!-- Modal new User -->
@@ -218,7 +226,9 @@ export default {
     return {
       // pagination
       current: 1,
-      // pagination
+
+      // search
+      text: "",
 
       // form users
       labelCol: { span: 4 },
@@ -324,10 +334,18 @@ export default {
   },
 
   methods: {
+    // search
+    async onSearch(value) {
+      this.text = value;
+      let page = this.current;
+      this.$router
+        .push({ name: "users", query: { page, param: value } })
+        .catch(() => {});
+      await this.fetchUsers();
+    },
     // modal delete
 
     async handlePagination(page) {
-      console.log(page);
       this.current = page;
       this.$router.push({ name: "users", query: { page } }).catch(() => {});
       await this.fetchUsers();
@@ -422,7 +440,7 @@ export default {
 <style>
 .btn-wp {
   display: flex;
-  justify-content: flex-start;
+  gap: 35px;
   align-items: center;
   margin: 15px 15px;
 }

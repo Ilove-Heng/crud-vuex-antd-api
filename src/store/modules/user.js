@@ -36,14 +36,11 @@ export default {
       let url = "";
       const query = router.currentRoute.query;
       if (query.page !== undefined && query.page) url += `?page=${query.page}`;
+      if (query.param !== undefined && query.param != "")
+        url += `&param=${query.param}`;
       axios
-        .get("http://laravelapi.local/api/users" + url)
+        .get(`http://laravelapi.local/api/users${url}`)
         .then((response) => {
-          // state.users = response.data.users;
-          console.log(
-            "🚀 : response.data.meta.total",
-            response.data.meta.total
-          );
           commit("GET_USER", response.data.data);
           commit("GET_PAGE_NUM", response.data.meta.total);
         })
